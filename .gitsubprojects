@@ -1,0 +1,3 @@
+# -*- mode: cmake -*-
+git_subproject(ZeroBuf https://github.com/HBPVIS/ZeroBuf.git f64580a)
+git_subproject(ZeroEQ https://github.com/HBPVIS/ZeroEQ.git 6de9a8a)
