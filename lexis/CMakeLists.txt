@@ -4,6 +4,10 @@
 include(zerobufGenerateCxx)
 set(__outdir ${PROJECT_BINARY_DIR}/include/lexis)
 
+set(LEXIS_DIR ${__outdir})
+set(LEXIS_FBS request.fbs)
+zerobuf_generate_cxx(LEXIS ${LEXIS_DIR} ${LEXIS_FBS})
+
 set(LEXIS_DATA_DIR ${__outdir}/data)
 set(LEXIS_DATA_FBS data/frameRange.fbs)
 set(LEXIS_DATA_DETAIL_FBS data/progress.fbs)
@@ -22,13 +26,14 @@ set(LEXIS_RENDER_FBS
 zerobuf_generate_cxx(LEXIS_RENDER ${LEXIS_RENDER_DIR} ${LEXIS_RENDER_FBS})
 
 set(LEXIS_PUBLIC_HEADERS
+  ${LEXIS_HEADERS}
   ${LEXIS_DATA_HEADERS}
   ${LEXIS_DATA_DETAIL_HEADERS}
   ${LEXIS_RENDER_HEADERS}
   data/Progress.h
 )
 
-set(LEXIS_SOURCES
+list(APPEND LEXIS_SOURCES
   ${LEXIS_DATA_SOURCES}
   ${LEXIS_DATA_DETAIL_SOURCES}
   ${LEXIS_RENDER_SOURCES}
@@ -42,6 +47,9 @@ common_library(Lexis)
 if(TARGET Qt5::Core)
   set(__outdir ${PROJECT_BINARY_DIR}/include/lexisqt)
 
+  set(LEXISQT_DIR ${__outdir})
+  zerobuf_generate_qobject(LEXISQT ${LEXISQT_DIR} ${LEXIS_FBS})
+
   set(LEXISQT_DATA_DIR ${__outdir}/data)
   zerobuf_generate_qobject(LEXISQT_DATA ${LEXISQT_DATA_DIR} ${LEXIS_DATA_FBS})
 
@@ -49,11 +57,13 @@ if(TARGET Qt5::Core)
   zerobuf_generate_qobject(LEXISQT_RENDER ${LEXISQT_RENDER_DIR} ${LEXIS_RENDER_FBS})
 
   set(LEXISQT_PUBLIC_HEADERS
+    ${LEXISQT_HEADERS}
     ${LEXISQT_DATA_HEADERS}
     ${LEXISQT_RENDER_HEADERS}
   )
 
-  set(LEXISQT_SOURCES
+  list(APPEND LEXISQT_SOURCES
+    ${LEXISQT_SOURCES}
     ${LEXISQT_DATA_SOURCES}
     ${LEXISQT_RENDER_SOURCES}
   )
