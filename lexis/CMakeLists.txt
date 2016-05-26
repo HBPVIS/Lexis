@@ -9,7 +9,11 @@ set(LEXIS_FBS request.fbs)
 zerobuf_generate_cxx(LEXIS ${LEXIS_DIR} ${LEXIS_FBS})
 
 set(LEXIS_DATA_DIR ${__outdir}/data)
-set(LEXIS_DATA_FBS data/frameRange.fbs)
+set(LEXIS_DATA_FBS
+  data/cellSetBinaryOp.fbs
+  data/frameRange.fbs
+  data/selections.fbs
+)
 set(LEXIS_DATA_DETAIL_FBS data/progress.fbs)
 zerobuf_generate_cxx(LEXIS_DATA ${LEXIS_DATA_DIR} ${LEXIS_DATA_FBS})
 zerobuf_generate_cxx(LEXIS_DATA_DETAIL ${LEXIS_DATA_DIR}/detail
