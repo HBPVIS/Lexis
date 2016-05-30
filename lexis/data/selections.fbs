@@ -1,0 +1,14 @@
+// Copyright (c) 2014, Human Brain Project
+//                     Juan Hernando <jhernando@fi.upm.es>
+//
+namespace lexis.data;
+
+table SelectedIDs
+{
+  ids:[uint];
+}
+
+table ToggleIDRequest
+{
+  ids:[uint];
+}

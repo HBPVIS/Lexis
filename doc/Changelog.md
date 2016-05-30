@@ -2,4 +2,4 @@
 
 # git master
 
-* Initial version, moved ZeroBufData and ZeroBufRender
+* Initial version, moved ZeroBufData, ZeroBufRender and ZeroEQHBP
