@@ -2,6 +2,6 @@
 
 # git master
 
-* [#xxx](https://github.com/HBPVis/Lexis/pull/xxx):
-  Histogram event added.
+* [#5](https://github.com/HBPVis/Lexis/pull/5):
+  ViewHistogram event added.
 * Initial version, moved ZeroBufData, ZeroBufRender and ZeroEQHBP
