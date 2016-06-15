@@ -1,0 +1,30 @@
+// Copyright (c) 2016, Human Brain Project
+//                     Ahmet Bilgili <ahmet.bilgili@epfl.ch>
+
+// This event is used to communicate histograms for
+// 8 bit data between applications ( also inside the
+// application ). Some fields are application specific.
+// "area" and "id". These fields
+// are used to accumulate diffent histograms from
+// different render clients for the same view.
+// Every rendered frame has a unique identifier "id".
+//
+// Currently every data is discretized to 256 bins.
+// This may change later to higer number of bins if
+// needed.
+//
+// Note: When ZeroBuf has a method to include other
+// fbs files, the application specific areas can be
+// application event and histogram may stay without
+// the "area" and "id" fields.
+
+namespace lexis.render;
+
+table ViewHistogram
+{
+  bins:[ulong:256]; // The bins for data.
+
+// Application specific areas ( i.e. Livre )
+  area:float; // The viewport area, bin is computed.
+  id:uint; // The unique identifier of the histogram
+}
