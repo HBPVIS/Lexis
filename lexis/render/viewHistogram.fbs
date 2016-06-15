@@ -16,7 +16,7 @@
 // Note: When ZeroBuf has a method to include other
 // fbs files, the application specific areas can be
 // application event and histogram may stay without
-// the viewportArea" and "id" fields.
+// the "area" and "id" fields.
 
 namespace lexis.render;
 
