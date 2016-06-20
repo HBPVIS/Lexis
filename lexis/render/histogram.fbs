@@ -1,0 +1,18 @@
+// Copyright (c) 2016, Human Brain Project
+//                     Ahmet Bilgili <ahmet.bilgili@epfl.ch>
+
+// This event is used to communicate histograms for
+// 8 bit data between applications ( also inside the
+// application ).
+//
+// Currently every data is discretized to 256 bins.
+// This may change later to higer number of bins if
+// needed.
+//
+
+namespace lexis.render;
+
+table Histogram
+{
+  bins:[ulong:256]; // The bins for data.
+}

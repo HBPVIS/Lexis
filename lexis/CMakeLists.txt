@@ -23,7 +23,7 @@ set(LEXIS_RENDER_DIR ${__outdir}/render)
 set(LEXIS_RENDER_FBS
   ${CMAKE_CURRENT_SOURCE_DIR}/render/exit.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/frame.fbs
-  ${CMAKE_CURRENT_SOURCE_DIR}/render/viewHistogram.fbs
+  ${CMAKE_CURRENT_SOURCE_DIR}/render/histogram.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/imageJPEG.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/lookOut.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/lookupTable1D.fbs
