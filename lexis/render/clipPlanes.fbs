@@ -1,0 +1,22 @@
+// Copyright (c) 2016, Human Brain Project
+//                     Ahmet Bilgili <ahmet.bilgili@epfl.ch>
+
+// This event is used to communicate clip planes between
+// applications. Every plane is defined in point-normal
+// form. n normal and d value [ nx, ny, nz d ]. Here for
+// given points, p, that are on the plane, n.p + d = 0
+// is satisfied. If n.p + d < 0, these points are clipped.
+// The plane equations are defined in world reference system.
+
+namespace lexis.render;
+
+table Plane
+{
+  normal:[float:3];
+  d:float;
+}
+
+table ClipPlanes
+{
+  planes:[Plane];
+}
