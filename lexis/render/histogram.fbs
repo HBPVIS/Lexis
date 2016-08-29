@@ -1,18 +1,21 @@
 // Copyright (c) 2016, Human Brain Project
 //                     Ahmet Bilgili <ahmet.bilgili@epfl.ch>
 
-// This event is used to communicate histograms for
-// 8 bit data between applications ( also inside the
-// application ).
+// This event is used to communicate histograms with
+// arbitrary number of bins.
 //
-// Currently every data is discretized to 256 bins.
-// This may change later to higer number of bins if
-// needed.
+// A histogram divides a range [min, max] of possible values in "n"
+// bins and counts how many elements fall inside each bin.
+//
+// When min and max values are equal, there is only one
+// bin value with the number of elements.
 //
 
 namespace lexis.render;
 
 table Histogram
 {
-  bins:[ulong:256]; // The bins for data.
+  bins:[ulong]; // The bins for data.
+  min:float;    // minimum value of the binned data
+  max:float;    // maximum value of the binned data
 }
