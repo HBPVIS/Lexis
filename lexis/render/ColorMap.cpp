@@ -5,6 +5,8 @@
 #include "ColorMap.h"
 
 #include <algorithm>
+#include <sstream>
+#include <fstream>
 
 namespace lexis
 {
@@ -32,15 +34,28 @@ void sortChannel( ::zerobuf::Vector< detail::ControlPoint >& cps )
 
 ColorMap::ColorMap()
 {
-    registerDeserializedCallback([&]{ _isSorted = false; });
+    //registerDeserializedCallback([&]{ _isSorted = false; });
 }
 
 ColorMap::~ColorMap()
 {}
 
+ColorMap::ColorMap( const std::string& filename )
+{
+    std::ifstream file( filename.c_str( ));
+
+    std::string line;
+    std::stringstream iss( line );
+    while( std::getline( file, line ))
+        iss << line;
+
+    fromJSON( iss.str( ));
+    _isSorted = false;
+}
+
 void ColorMap::addControlPoint( const detail::ControlPoint& cp, const Channel channel )
 {
-    ::zerobuf::Vector< detail::ControlPoint >& cps = _getControlPoints( channel );
+    auto& cps = getControlPoints( channel );
     for( size_t i = 0; i < cps.size(); ++i )
     {
         detail::ControlPoint& c = cps[ i ];
@@ -55,15 +70,50 @@ void ColorMap::addControlPoint( const detail::ControlPoint& cp, const Channel ch
     _isSorted = false;
 }
 
+bool ColorMap::removeControlPoint( const float x, ColorMap::Channel channel )
+{
+    auto& cps = getControlPoints( channel );
+    size_t index = -1u;
+    for( size_t i = 0; i < cps.size(); ++i )
+    {
+        const detail::ControlPoint& c = cps[ i ];
+        if( c.getX() == x )
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if( index == -1u )
+        return false;
+
+    std::vector< detail::ControlPoint > copy;
+    for( size_t i = 0; i < cps.size(); ++i )
+    {
+        if( i == index )
+            continue;
+
+        copy.push_back( cps[ i ]);
+    }
+
+    cps.clear();
+    for( const auto& cp: copy )
+        cps.push_back( cp );
+
+    return true;
+}
+
 bool ColorMap::isEmpty() const
 {
     return getRed().empty() &&  getGreen().empty() &&
            getBlue().empty() &&  getAlpha().empty();
 }
 
-::zerobuf::Vector<detail::ControlPoint>& ColorMap::_getControlPoints(
-        const ColorMap::Channel channel )
+const ::zerobuf::Vector<detail::ControlPoint>& ColorMap::getControlPoints(
+        const ColorMap::Channel channel ) const
 {
+    _sortChannels();
+
     switch( channel )
     {
     case Channel::red:
@@ -79,18 +129,44 @@ bool ColorMap::isEmpty() const
     }
 }
 
-void ColorMap::_sortChannels()
+::zerobuf::Vector<detail::ControlPoint>& ColorMap::getControlPoints(
+        const ColorMap::Channel channel )
+{
+    _sortChannels();
+
+    switch( channel )
+    {
+    case Channel::red:
+        return getRed();
+    case Channel::green:
+        return getGreen();
+    case Channel::blue:
+        return getBlue();
+    case Channel::alpha:
+        return getAlpha();
+    default:
+        throw( std::runtime_error( "Unsupported channel" ));
+    }
+}
+
+void ColorMap::_sortChannels() const
 {
     if( _isSorted )
         return;
 
-    sortChannel( getRed( ));
-    sortChannel( getGreen( ));
-    sortChannel( getBlue( ));
-    sortChannel( getAlpha( ));
+    ColorMap* colorMap = const_cast< ColorMap* >( this );
+    sortChannel( colorMap->getRed( ));
+    sortChannel( colorMap->getGreen( ));
+    sortChannel( colorMap->getBlue( ));
+    sortChannel( colorMap->getAlpha( ));
     _isSorted = true;
 }
 
+void getTextureSampleRange( const size_t count, float& begin, float& end )
+{
+    const float diff = 1.0f / ( count - 1 );
+    begin = diff; end = 1.0f - diff;
+}
 
 }
 }

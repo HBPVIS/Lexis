@@ -71,16 +71,19 @@ public:
     LEXIS_API ColorMap();
     LEXIS_API ~ColorMap();
 
+    LEXIS_API ColorMap( const std::string& filename );
+
     /**
      * Copy a colormap.
      * @param cm source color map.
      */
     LEXIS_API ColorMap( const ColorMap& cm )
-        : detail::ColorMap( cm ) {}
+        : detail::ColorMap( cm ), _isSorted( false ) {}
 
     LEXIS_API ColorMap& operator=( const ColorMap& cm )
     {
         detail::ColorMap::operator=( cm );
+        _isSorted = false;
         return *this;
     }
 
@@ -94,7 +97,7 @@ public:
      * have the same color for that channel.
      */
     template< typename T >
-    LEXIS_API Colors< T > sampleColors( size_t count );
+    LEXIS_API Colors< T > sampleColors( size_t count ) const;
 
     /**
      * Samples colors linearly in the given region of control points, given the
@@ -105,7 +108,7 @@ public:
      * @param count number of sample points
      */
     template< typename T >
-    LEXIS_API void sampleColors( T* data, size_t count );
+    LEXIS_API void sampleColors( T* data, size_t count ) const;;
 
     /**
      * Samples and returns colors linearly in the given region of control points, given the
@@ -119,7 +122,7 @@ public:
      * If there is only one control point, all samples will have the same color for that channel.
      */
     template< typename T >
-    LEXIS_API Colors< T > sampleColors( size_t count, float min, float max, T emptyColor );
+    LEXIS_API Colors< T > sampleColors( size_t count, float min, float max, T emptyColor ) const;
 
     /**
      * Samples colors and fills the given buffer linearly in the given region of control points,
@@ -134,7 +137,7 @@ public:
      * @returns colors that are interpolated for given control points range.
      */
     template< typename T >
-    LEXIS_API void sampleColors( T* data, size_t count, float min, float max, T emptyColor );
+    LEXIS_API void sampleColors( T* data, size_t count, float min, float max, T emptyColor ) const;
 
     /**
      * Adds a control point to a given channel. If there is already a control point for the
@@ -143,14 +146,51 @@ public:
      */
     LEXIS_API void addControlPoint( const detail::ControlPoint& cp, Channel channel );
 
-    /** returns true if there are no control points in any channel */
+    /**
+     * Removes a control point for a given channel.
+     * @param x position of the control point
+     * @param channel is the channel of the control points
+     * @returns true if control point with x position is removed
+     */
+    LEXIS_API bool removeControlPoint( float x, Channel channel );
+
+    /**
+     * Gets the control point given the index
+     * @param x position of the control point
+     * @param channel is the channel of the control points
+     * @return the control point. If index is out of bounds, returns an invalid control point
+     */
+    LEXIS_API detail::ControlPoint& getControlPoint( float x, Channel channel );
+
+    /**
+     * Gets the control point given the index
+     * @param x position of the control point
+     * @param channel is the channel of the control points
+     * @return the control point. If index is out of bounds, returns an invalid control point
+     */
+    LEXIS_API detail::ControlPoint getControlPoint( float x, Channel channel ) const;
+
+    /**
+     *  Gets the list of control points
+     *  @param channel is the channel of the control points
+     *  @return the list of control points in a channel
+     */
+    const ::zerobuf::Vector< detail::ControlPoint >& getControlPoints( Channel channel ) const;
+
+    /**
+     *  Gets the list of control points
+     *  @param channel is the channel of the control points
+     *  @return the list of control points in a channel
+     */
+    ::zerobuf::Vector< detail::ControlPoint >& getControlPoints( Channel channel );
+
+    /** @return true if there are no control points in any channel */
     LEXIS_API bool isEmpty() const;
 
 private:
 
-    ::zerobuf::Vector< detail::ControlPoint >& _getControlPoints( Channel channel );
-    void _sortChannels();
-    bool _isSorted;
+    void _sortChannels() const;
+    mutable bool _isSorted;
 };
 
 /**
@@ -159,11 +199,7 @@ private:
  * @param begin is the center of the first texel
  * @param end is the center of the last texel
  */
-void getTextureSampleRange( const size_t count, float& begin, float& end )
-{
-    const float diff = 1.0f / ( count - 1 );
-    begin = diff; end = 1.0f - diff;
-}
+void getTextureSampleRange( const size_t count, float& begin, float& end );
 
 #include "ColorMap.ipp"
 

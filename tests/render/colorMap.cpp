@@ -253,3 +253,17 @@ BOOST_AUTO_TEST_CASE(textureStartEnd)
     BOOST_CHECK_EQUAL( begin, diff );
     BOOST_CHECK_EQUAL( end, 1.0f - diff );
 }
+
+#include "colorMap.h"
+
+BOOST_AUTO_TEST_CASE(samplingTest)
+{
+    const float begin = 0.2f;
+    const float end = 19.3f;
+    auto colorMap = createColorMap();
+    float buffer[ 4 * sampleCount ] = { 0 };
+    colorMap.sampleColors( &buffer[ 0 ], sampleCount, begin, end, float( testEmptyColor ));
+
+    for( size_t i = 0; i < sampleCount * 4; ++i )
+        BOOST_CHECK_CLOSE( buffer[ i ], testColorBuffer[ i ], 0.001f );
+}

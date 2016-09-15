@@ -8,7 +8,7 @@
 static const size_t nChannels = 4;
 
 template< typename T >
-Colors< T > ColorMap::sampleColors( size_t count )
+Colors< T > ColorMap::sampleColors( size_t count ) const
 {
     return sampleColors< T >( count,
                               -std::numeric_limits< float >::max(),
@@ -17,7 +17,7 @@ Colors< T > ColorMap::sampleColors( size_t count )
 }
 
 template< typename T >
-void ColorMap::sampleColors( T* data, size_t count )
+void ColorMap::sampleColors( T* data, size_t count ) const
 {
     return sampleColors< T >( data,
                               count,
@@ -27,7 +27,7 @@ void ColorMap::sampleColors( T* data, size_t count )
 }
 
 template< typename T >
-Colors< T > ColorMap::sampleColors( size_t count, float min, float max, T emptyColor )
+Colors< T > ColorMap::sampleColors( size_t count, float min, float max, T emptyColor ) const
 {
     Colors< T > colors( count, { emptyColor, emptyColor, emptyColor, emptyColor });
     sampleColors( reinterpret_cast< T* >( colors.data( )), count, min, max, emptyColor );
@@ -35,7 +35,7 @@ Colors< T > ColorMap::sampleColors( size_t count, float min, float max, T emptyC
 }
 
 template< typename T >
-void ColorMap::sampleColors( T* data, size_t count, float min, float max, T emptyColor )
+void ColorMap::sampleColors( T* data, size_t count, float min, float max, T emptyColor ) const
 {
     if( isEmpty( ))
         return;
@@ -51,7 +51,7 @@ void ColorMap::sampleColors( T* data, size_t count, float min, float max, T empt
         maxX = -std::numeric_limits< float >::max();
         for( const auto& channel: channels )
         {
-            ::zerobuf::Vector< detail::ControlPoint >& cps = _getControlPoints( channel );
+            const ::zerobuf::Vector< detail::ControlPoint >& cps = getControlPoints( channel );
 
             if( cps.empty())
                 continue;
@@ -68,7 +68,7 @@ void ColorMap::sampleColors( T* data, size_t count, float min, float max, T empt
 
     for( const auto& channel: channels )
     {
-        ::zerobuf::Vector< detail::ControlPoint >& cps = _getControlPoints( channel );
+        const ::zerobuf::Vector< detail::ControlPoint >& cps = getControlPoints( channel );
 
         const size_t cpsSize = cps.size();
 
