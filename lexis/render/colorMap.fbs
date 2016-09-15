@@ -29,7 +29,8 @@ table ControlPoint
     y: float;
 }
 
-// 1 channel transfer function
+// A transfer function can refer to some rendering
+// parameter that may not be channel (as RGBA).
 table TransferFunction
 {
     attribute: string;
@@ -39,10 +40,10 @@ table TransferFunction
 // 4 channel transfer function
 table ColorMap
 {
-    r: [ControlPoint];
-    g: [ControlPoint];
-    b: [ControlPoint];
-    a: [ControlPoint];
+    red:   [ControlPoint];
+    green: [ControlPoint];
+    blue:  [ControlPoint];
+    alpha: [ControlPoint];
 }
 
 // Range of values for which the transfer function applies

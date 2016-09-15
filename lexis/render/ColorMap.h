@@ -17,22 +17,31 @@ namespace lexis
 namespace render
 {
 
-// Templated 4-channel color class
+/** Templated 4-channel color class */
 template< typename T >
 struct Color
 {
     T r,g,b,a;
 };
 
-// Control point helper class
+/** Control point helper class */
 struct ControlPoint : public detail::ControlPoint
 {
+    /**
+     * Constructor
+     * @param x position of the control point
+     * @param y position of the control point
+     */
     ControlPoint( const float x, const float y )
     {
         setX( x );
         setY( y );
     }
 
+    /**
+     * Copy a control point.
+     * @param cp source control point
+     */
     ControlPoint( const ControlPoint& cp )
         : detail::ControlPoint( cp ) {}
 
@@ -43,7 +52,7 @@ struct ControlPoint : public detail::ControlPoint
     }
 };
 
-// Vector with list of Colors can directly be uploaded to GPU
+/** Definition of a typed vector with list of colors */
 template< typename T >
 using Colors = std::vector< Color< T >>;
 
@@ -57,7 +66,6 @@ public:
         green     = 1,
         blue      = 2,
         alpha     = 3,
-        nChannels = 4
     };
 
     LEXIS_API ColorMap();
@@ -65,12 +73,12 @@ public:
 
     /**
      * Copy a colormap.
-     * @param cm The colormap to be copied.
+     * @param cm source color map.
      */
-    ColorMap( const ColorMap& cm )
+    LEXIS_API ColorMap( const ColorMap& cm )
         : detail::ColorMap( cm ) {}
 
-    ColorMap& operator=( const ColorMap& cm )
+    LEXIS_API ColorMap& operator=( const ColorMap& cm )
     {
         detail::ColorMap::operator=( cm );
         return *this;
@@ -145,105 +153,20 @@ private:
     bool _isSorted;
 };
 
-template< typename T >
-Colors< T > ColorMap::sampleColors( size_t count )
+/**
+ * Gets the range for the 1d texture sampling.
+ * @param count is the number of texels
+ * @param begin is the center of the first texel
+ * @param end is the center of the last texel
+ */
+void getTextureSampleRange( const size_t count, float& begin, float& end )
 {
-    return sampleColors< T >( count,
-                              -std::numeric_limits< float >::infinity(),
-                              std::numeric_limits< float >::infinity(),
-                              static_cast< T >( 0 ));
+    const float diff = 1.0f / ( count - 1 );
+    begin = diff; end = 1.0f - diff;
 }
 
-template< typename T >
-void ColorMap::sampleColors( T* data, size_t count )
-{
-    return sampleColors< T >( data,
-                              count,
-                              -std::numeric_limits< float >::infinity(),
-                              std::numeric_limits< float >::infinity(),
-                              static_cast< T >( 0 ));
-}
+#include "ColorMap.ipp"
 
-template< typename T >
-Colors< T > ColorMap::sampleColors( size_t count, float min, float max, T emptyColor )
-{
-    Colors< T > colors( count, { emptyColor, emptyColor, emptyColor, emptyColor });
-    sampleColors( reinterpret_cast< T* >( colors.data( )), count, min, max, emptyColor );
-    return colors;
-}
-
-template< typename T >
-void ColorMap::sampleColors( T* data, size_t count, float min, float max, T emptyColor )
-{
-    _sortChannels();
-    const Channel channels[] = { Channel::red, Channel::green, Channel::blue, Channel::alpha };
-    for( const auto& channel: channels )
-    {
-        ::zerobuf::Vector< detail::ControlPoint >& cps = _getControlPoints( channel );
-        const size_t cpsSize = cps.size();
-        if( cps.empty( )) // No element, do nothing
-            continue;
-        else if( cpsSize == 1 ) // 1 element
-        {
-            for( size_t sample = 0; sample < count; ++sample )
-                data[ sample * ( size_t )Channel::nChannels + ( size_t )channel ] = cps[ 0 ].getY();
-            continue;
-        }
-
-        const detail::ControlPoint& begin = cps[ 0 ];
-        const detail::ControlPoint& end = cps[ cpsSize - 1 ];
-
-        const float cpMinX = begin.getX();
-        const float cpMaxX = end.getX();
-        const float minX = min == -std::numeric_limits< float >::infinity() ? cpMinX : min;
-        const float maxX = max == std::numeric_limits< float >::infinity() ? cpMaxX : max;
-
-        // Range is out of bounds
-        if( maxX < cpMinX || minX > cpMaxX )
-        {
-            for( size_t sample = 0; sample < count; ++sample )
-                data[ sample * (size_t)Channel::nChannels + (size_t)channel ] = emptyColor;
-            continue;
-        }
-
-        // Find the first control point larger than minimum range
-        size_t i = 0;
-        while( i < cpsSize - 1 )
-        {
-            detail::ControlPoint& c = cps[ i ];
-            if( c.getX() > minX )
-                break;
-            ++i;
-        }
-
-        const float xDiff = ( maxX - minX ) / ( count - 1 );
-        for( size_t sample = 0; sample < count; ++sample )
-        {
-            const float x = minX + xDiff * (float)sample;
-            if( x < cpMinX || x > cpMaxX )
-                data[ sample * (size_t)Channel::nChannels + (size_t)channel ] = emptyColor;
-            else
-            {
-                if( x > cps[ i ].getX( ))
-                    ++i;
-
-                const detail::ControlPoint& current = cps[ i - 1 ];
-                const detail::ControlPoint& next = cps[ i ];
-
-                // Linear interpolation between control points
-                const float weight = ( x - current.getX( )) / ( next.getX() - current.getX( ));
-                const float currentColor = current.getY();
-                const float nextColor = next.getY();
-                const float val = currentColor * ( 1.0f - weight ) + nextColor * weight;
-
-                data[ sample * (size_t)Channel::nChannels + (size_t)channel ] =
-                    std::is_integral< T >::value ? val * (float)std::numeric_limits< T >::max() : val;
-            }
-
-        }
-    }
 }
 }
-}
-
 #endif // LEXIS_RENDER_COLORMAP_H

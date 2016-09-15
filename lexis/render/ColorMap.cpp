@@ -30,12 +30,6 @@ void sortChannel( ::zerobuf::Vector< detail::ControlPoint >& cps )
 }
 }
 
-ControlPoint::ControlPoint( const float x, const float y )
-{
-    setX( x );
-    setY( y );
-}
-
 ColorMap::ColorMap()
 {
     registerDeserializedCallback([&]{ _isSorted = false; });
@@ -63,33 +57,26 @@ void ColorMap::addControlPoint( const detail::ControlPoint& cp, const Channel ch
 
 bool ColorMap::isEmpty() const
 {
-    return getR().empty() &&  getG().empty() &&
-           getB().empty() &&  getA().empty();
+    return getRed().empty() &&  getGreen().empty() &&
+           getBlue().empty() &&  getAlpha().empty();
 }
 
 ::zerobuf::Vector<detail::ControlPoint>& ColorMap::_getControlPoints(
         const ColorMap::Channel channel )
 {
-    ::zerobuf::Vector< detail::ControlPoint >* cps = 0;
     switch( channel )
     {
     case Channel::red:
-        cps = &getR();
-        break;
+        return getRed();
     case Channel::green:
-        cps = &getG();
-        break;
+        return getGreen();
     case Channel::blue:
-        cps = &getB();
-        break;
+        return getBlue();
     case Channel::alpha:
-        cps = &getA();
-        break;
-    case Channel::nChannels:
+        return getAlpha();
     default:
         throw( std::runtime_error( "Unsupported channel" ));
     }
-    return *cps;
 }
 
 void ColorMap::_sortChannels()
@@ -97,10 +84,10 @@ void ColorMap::_sortChannels()
     if( _isSorted )
         return;
 
-    sortChannel( getR( ));
-    sortChannel( getG( ));
-    sortChannel( getB( ));
-    sortChannel( getA( ));
+    sortChannel( getRed( ));
+    sortChannel( getGreen( ));
+    sortChannel( getBlue( ));
+    sortChannel( getAlpha( ));
     _isSorted = true;
 }
 
