@@ -16,6 +16,8 @@ const uint8_t defaultEmptyColor = 0;
 lexis::render::ColorMap createColorMap()
 {
     lexis::render::ColorMap colorMap;
+    BOOST_CHECK( colorMap.isEmpty( ));
+
     lexis::render::ControlPoint rCtrlPnts[] =
         {
             { 0.7f, 0.1f },
@@ -77,6 +79,7 @@ uint8_t convertColor( const float color )
 BOOST_AUTO_TEST_CASE(controlPointsRange_uint8)
 {
     auto colorMap = createColorMap();
+    BOOST_CHECK( !colorMap.isEmpty( ));
     const auto& colors = colorMap.sampleColors< uint8_t >( sampleCount );
     uint8_t buffer[ 4 * sampleCount ] = { 0 };
     colorMap.sampleColors( &buffer[ 0 ], sampleCount );
@@ -86,6 +89,9 @@ BOOST_AUTO_TEST_CASE(controlPointsRange_uint8)
     BOOST_CHECK_EQUAL( colors[ sampleCount / 2 ].b, convertColor( 0.1f ));
     BOOST_CHECK_EQUAL( colors[ sampleCount - 1 ].b, convertColor( 0.1f ));
     BOOST_CHECK_EQUAL( colors[ sampleCount - 1 ].a, defaultEmptyColor );
+
+    colorMap.clear();
+    BOOST_CHECK( colorMap.isEmpty( ));
 }
 
 BOOST_AUTO_TEST_CASE(controlPointsRange_float)

@@ -56,7 +56,16 @@ struct ControlPoint : public detail::ControlPoint
 template< typename T >
 using Colors = std::vector< Color< T >>;
 
-/** 4 channel, 1 dimensional color map defined with control points.  */
+/**
+ * 4 channel, 1 dimensional color map defined with control points. Control points
+ * hold 2 dimensional information ( x, y ). x corresponds to position of the color
+ * in data range, y corresponds to color value in floating point values [0.0, 1.0].
+ * According to the sampling function type, the y - color - values are converted
+ * to given type
+ * i.e if data is between 0 and 255, the x values carries values between 0 and 255,
+ * and if color is given as 0.5 and sampled in uint8s the color is given as
+ * uint8( 0.5 * 255.0 ) = 127
+ */
 class ColorMap : public detail::ColorMap
 {
 public:
@@ -71,6 +80,10 @@ public:
     LEXIS_API ColorMap();
     LEXIS_API ~ColorMap();
 
+    /**
+     * Constructs a color map from a file ( *.lba, *.lbb )
+     * @param filename name of the color map file
+     */
     LEXIS_API ColorMap( const std::string& filename );
 
     /**
@@ -87,10 +100,13 @@ public:
         return *this;
     }
 
+    /** @returns the default color map */
+    LEXIS_API static ColorMap getDefaultColorMap( const float min, const float max );
+
     /**
      * Samples colors linearly in the given region of control points, given the
      * number of sample points
-     @param count number of sample points
+     * @param count number of sample points
      * @returns colors that are interpolated between the minimum and maximum
      * of the control points.  If there are no control points for a channel, the returned colors
      * will have 0 for that channel. If there is only one control point, all samples will
@@ -175,14 +191,18 @@ public:
      *  @param channel is the channel of the control points
      *  @return the list of control points in a channel
      */
-    const ::zerobuf::Vector< detail::ControlPoint >& getControlPoints( Channel channel ) const;
+    LEXIS_API const ::zerobuf::Vector< detail::ControlPoint >& getControlPoints(
+            Channel channel ) const;
 
     /**
      *  Gets the list of control points
      *  @param channel is the channel of the control points
      *  @return the list of control points in a channel
      */
-    ::zerobuf::Vector< detail::ControlPoint >& getControlPoints( Channel channel );
+    LEXIS_API ::zerobuf::Vector< detail::ControlPoint >& getControlPoints( Channel channel );
+
+    /** Clears the color map by removing all control points */
+    LEXIS_API void clear();
 
     /** @return true if there are no control points in any channel */
     LEXIS_API bool isEmpty() const;

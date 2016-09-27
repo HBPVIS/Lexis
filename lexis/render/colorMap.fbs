@@ -22,11 +22,14 @@
 
 namespace lexis.render.detail;
 
-// Control point
+// Control points
 table ControlPoint
 {
-    x: float;
-    y: float;
+    x: float; // The data position. i.e if data is between 0 and 255, x values will be
+              // between 0 and 255.
+    y: float; // In general color values between 0.0 and 1.0f but it can also be used
+              // for other purposes.
+
 }
 
 // A transfer function can refer to some rendering
@@ -37,7 +40,9 @@ table TransferFunction
     points: [ControlPoint];
 }
 
-// 4 channel transfer function
+// 4 channel, 1 dimensional color map defined with control points. Control points
+// hold 2 dimensional information ( x, y ). x corresponds to position of the color
+// in data range, y corresponds to color value in floating point values [0.0, 1.0].
 table ColorMap
 {
     red:   [ControlPoint];
@@ -46,7 +51,10 @@ table ColorMap
     alpha: [ControlPoint];
 }
 
-// Range of values for which the transfer function applies
+// Range of values for which the transfer function applies. i.e if the
+// control point, x values are between -100.0f and 200.0f, and user wants
+// to work in details in range 5.0f and 20.0f, this range can be set using
+// this event.
 table Threshold
 {
     min: float;
