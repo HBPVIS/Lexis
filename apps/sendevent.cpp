@@ -106,7 +106,7 @@ ZeroBufPtr parseCellSetBinaryOp( std::istream& input )
     }
     std::string operationName = trim(line);
     if( operationName == "SYNAPTIC_PROJECTIONS" )
-        operation = lexis::data::CellSetBinaryOpType_Projections;
+        operation = lexis::data::CellSetBinaryOpType::Projections;
     else
     {
         std::cerr << "Unknown operation for " << typeName << " "
