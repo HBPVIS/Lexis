@@ -2,6 +2,8 @@
 
 # git master
 
+* [#13](https://github.com/HBPVis/Lexis/pull/13):
+  Added lexis/render/Stream for Deflect stream parameters
 * [#9](https://github.com/HBPVis/Lexis/pull/9):
   Histogram event can have arbitrary number of bins.
   The data limits are given for the binned region

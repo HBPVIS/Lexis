@@ -28,6 +28,7 @@ set(LEXIS_RENDER_FBS
   ${CMAKE_CURRENT_SOURCE_DIR}/render/imageJPEG.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/lookOut.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/lookupTable1D.fbs
+  ${CMAKE_CURRENT_SOURCE_DIR}/render/stream.fbs
 )
 zerobuf_generate_cxx(LEXIS_RENDER ${LEXIS_RENDER_DIR} ${LEXIS_RENDER_FBS})
 

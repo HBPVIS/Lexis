@@ -1,0 +1,19 @@
+// Copyright (c) 2016, Human Brain Project
+//                     Daniel.Nachbaur@epfl.ch
+//
+
+namespace lexis.render;
+
+// Represents parameters to control a Deflect stream object
+// (https://bluebrain.github.io/Deflect-0.12/classdeflect_1_1_stream.html)
+// and the ImageWrapper
+// (https://bluebrain.github.io/Deflect-0.12/structdeflect_1_1_image_wrapper.html).
+table Stream
+{
+  id: string; // deflect::Stream::getId()
+  host: string; // deflect::Stream::getHost()
+  port: ushort = 1701; // deflect::Stream ctor parameter
+  enabled: bool = true; // if deflect::Stream object exists or not
+  compression: bool = true; // deflect::ImageWrapper::compressionPolicy
+  quality: ushort = 80; // deflect::ImageWrapper::compressionQuality
+}
