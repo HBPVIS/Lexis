@@ -1,0 +1,12 @@
+// Copyright (c) 2016, Human Brain Project
+//                     Daniel.Nachbaur@epfl.ch
+//
+
+namespace lexis.render;
+
+// Viewport in pixels used for rendering
+table Viewport
+{
+  size: [uint:2]; // tuple of width, height in pixels
+}
+

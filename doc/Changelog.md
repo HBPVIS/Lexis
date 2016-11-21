@@ -2,6 +2,8 @@
 
 # git master
 
+* [#16](https://github.com/HBPVis/Lexis/pull/16):
+  Added lexis/render/Viewport
 * [#13](https://github.com/HBPVis/Lexis/pull/13):
   Added lexis/render/Stream for Deflect stream parameters
 * [#9](https://github.com/HBPVis/Lexis/pull/9):
