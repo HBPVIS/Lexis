@@ -1,4 +1,4 @@
 Feature specifications {#Features}
 ======================
 
-* @subpage transferFunctions
+* @subpage colorMaps
