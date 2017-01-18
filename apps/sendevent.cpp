@@ -190,14 +190,12 @@ void parseScript( const char* filename, Events& events )
     parseScript( file, events );
 }
 
-void printUsageAndExit( const char* name, const int code, bool full = false )
+void printUsageAndExit( int code, bool full = false )
 {
-    std::cerr << "Usage: " << name
-              << " [script]" << std::endl
-              << "       " << name << " --help" << std::endl;
+    std::cout << "Usage: lexis-sendEvent [--help][script]" << std::endl;
     if (full)
     {
-        std::cerr << R"(
+        std::cout << R"(
 The script file contains a list of event. Each event is specified with the
 following format:
 event_name pause_in_seconds
@@ -229,20 +227,15 @@ void parseArguments( int argc, char** argv )
 {
     for( int i = 1; i != argc; ++i )
     {
-        if( strcmp( argv[i], "--help" ) == 0 ||
-            strcmp( argv[i], "-h" ) == 0 )
-        {
-            printUsageAndExit( argv[0], 0, true );
-        }
+        if( strcmp( argv[i], "--help" ) == 0 || strcmp( argv[i], "-h" ) == 0 )
+            printUsageAndExit( EXIT_SUCCESS, true );
         else if( scriptFile )
         {
             // This is an unexpected positional parameter
             std::cerr << "Unexpected parameter" << std::endl;
-            printUsageAndExit( argv[0], -1 );
+            printUsageAndExit( EXIT_FAILURE );
         }
         else
-        {
             scriptFile = argv[i];
-        }
     }
 }
