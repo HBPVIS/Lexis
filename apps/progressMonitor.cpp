@@ -88,11 +88,18 @@ private:
     std::map< std::string, Operation > _operations;
 };
 
-int main()
+int main( const int argc, char** )
 {
-    ProgressMonitor monitor;
+    if( argc > 1 )
+    {
+        std::cout << "lexis-progressMonitor: monitor lexis progress events"
+                  << std::endl;
+        return EXIT_SUCCESS;
+    }
 
+    ProgressMonitor monitor;
     while( true )
         monitor.update();
+
     return EXIT_SUCCESS;
 }
