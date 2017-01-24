@@ -1,4 +1,4 @@
-Color maps {#colorMaps}
+Color Maps {#colorMaps}
 ============
 
 Being able to specify a mapping between scalar variables and parameters used
@@ -42,14 +42,19 @@ positions of the control points. For convenience, the editor may store colormaps
 using normalized coordinates for the x axis and then recalculate the positions
 when applied to an application.
 
-### Messages
+## Specification
+
+* Values outside of the specified control points are mapped to the closest control point.
+* An empty transfer function has the value of 1?
+
+## Messages
 
     namespace lexis.render.detail; // subnamespace needed to avoid name clashes
 
     table ControlPoint
     {
-        x: float;
-        y: float;
+        x: double;
+        y: double;
     }
 
     table ColorMap
@@ -57,8 +62,37 @@ when applied to an application.
         red: [ControlPoint];
         green: [ControlPoint];
         blue: [ControlPoint];
-        alpha: [ControlPoint];
     }
+
+    table MaterialMap
+    {
+        diffuse: ColorMap;
+        emission: ColorMap;
+        specular: ColorMap;
+        alpha: [ControlPoint];
+        contribution: [ControlPoint] or double;
+    }
+
+    table MembraneVoltageMap
+    {
+        materialMap: MaterialMap;
+        range: [double:2];
+
+        // default control points in -80,20
+        foo* sampleColors( size_t nElems ); // absolute to range
+    }
+
+    table LFPVoltageMap
+    {
+        MaterialMap materialMap;
+        range: [double:2];
+
+        // default control points in -0.8, 0.8?
+        foo* sampleColors( size_t nElems ); // absolute to range
+    }
+
+    MembraneCurrentMap, SpikeDensityMap, SpikeActivationMap? as above.
+
 
 ### C++ helper classes
 
@@ -230,6 +264,9 @@ that request updates on objects stored on the receiver side and add a new field
 to the messages to identify the target object. Another option is aggregation
 on bigger application specific objects.
 
+Solved in http::Server by registering to different endpoints. Pub-Sub can only
+have one mapping per type ID.
+
 ### 5: Why control points x-values are absolute?
 
 _Resolved: Yes_
@@ -248,6 +285,43 @@ For storage on disk, generic color maps can be stored always with normalized
 coordinates, and adjusted after loading, but that is up to the front end
 interface to decide.
 
+Scrapped ideas to the one above:
+
+    // v2 absolute with semantic events
+    table ColorMap
+    {
+        red: [ControlPoint];
+        green: [ControlPoint];
+        blue: [ControlPoint];
+        alpha: [ControlPoint];
+    }
+
+    table MembraneVoltageMap
+    {
+        ColorMap colorMap;
+        foo* sampleColors( size_t nElems ); // absolute to range from points
+    }
+
+    table LFPVoltageMap
+    {
+        ColorMap colorMap;
+        foo* sampleColors( size_t nElems ); // absolute to range from points
+    }
+
+
+    // v3 absolute in one event with semantics
+    table ColorMap
+    {
+        ColorMap( enum dunit );
+        red: [ControlPoint];
+        green: [ControlPoint];
+        blue: [ControlPoint];
+        alpha: [ControlPoint];
+        dunit: enum;
+    }
+
+
+
 ### 6: Should the control point lists be sorted by x-value on the wire-protocol?
 
 _Resolved: No_
@@ -256,4 +330,3 @@ Despite the ControlMap C++ ensures that the points will be always sorted, for
 robustness it should not be assumed that the received points are in order.
 However it is not totally clear to me that it's possible to reorder the
 points upon reception without some undesired side-effect.
-
