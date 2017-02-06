@@ -19,5 +19,5 @@ table MaterialLUT
     emission: [Color]; // Light emission
     alpha: [float]; // Opacity [0..1]
     contribution: [float]; // Contribution rate to the existing surface
-                              material [0..1]
+                           // material [0..1]
 }
