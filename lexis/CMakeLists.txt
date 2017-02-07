@@ -21,7 +21,7 @@ zerobuf_generate_cxx(LEXIS_DATA_DETAIL ${LEXIS_DATA_DIR}/detail
 
 set(LEXIS_RENDER_DIR ${__outdir}/render)
 set(LEXIS_RENDER_FBS
-  ${CMAKE_CURRENT_SOURCE_DIR}/render/colorMaps.fbs
+  ${CMAKE_CURRENT_SOURCE_DIR}/render/materialLUT.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/clipPlanes.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/exit.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/frame.fbs
