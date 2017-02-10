@@ -1,9 +1,9 @@
-# Copyright (c) HBP 2016 Daniel.Nachbaur@epfl.ch
+# Copyright (c) HBP 2016-2017 Daniel.Nachbaur@epfl.ch
 # All rights reserved. Do not distribute without further notice.
 
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(Lexis VERSION 1.1.0)
-set(Lexis_VERSION_ABI 2)
+project(Lexis VERSION 1.2.0)
+set(Lexis_VERSION_ABI 3)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
                               ${CMAKE_SOURCE_DIR}/CMake/common)
@@ -18,6 +18,7 @@ set(COMMON_PROJECT_DOMAIN ch.epfl.bluebrain)
 include(Common)
 common_find_package(Boost COMPONENTS unit_test_framework)
 common_find_package(Qt5Core)
+common_find_package(vmmlib REQUIRED)
 common_find_package(ZeroBuf REQUIRED)
 common_find_package(ZeroEQ)
 common_find_package_post()

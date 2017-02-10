@@ -11,7 +11,7 @@
 // bin value with the number of elements.
 //
 
-namespace lexis.render;
+namespace lexis.render.detail;
 
 table Histogram
 {
