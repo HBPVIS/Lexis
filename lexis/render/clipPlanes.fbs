@@ -8,7 +8,7 @@
 // is satisfied. If n.p + d < 0, these points are clipped.
 // The plane equations are defined in world reference system.
 
-namespace lexis.render;
+namespace lexis.render.detail;
 
 table Plane
 {
