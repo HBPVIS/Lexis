@@ -23,7 +23,7 @@ common_find_package(ZeroBuf REQUIRED)
 common_find_package(ZeroEQ)
 common_find_package_post()
 
-set(LEXIS_DEPENDENT_LIBRARIES ZeroBuf)
+set(LEXIS_DEPENDENT_LIBRARIES vmmlib ZeroBuf)
 if(TARGET Qt5Core)
   list(APPEND LEXIS_DEPENDENT_LIBRARIES Qt5Core)
 endif()
