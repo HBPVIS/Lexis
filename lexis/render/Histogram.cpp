@@ -44,6 +44,23 @@ Histogram& Histogram::operator+=( const Histogram& histogram )
     return *this;
 }
 
+bool Histogram::operator==( const Histogram& rhs ) const
+{
+    if( this == &rhs )
+        return true;
+
+    return getMin() == rhs.getMin() &&
+           getMax() == rhs.getMax() &&
+           getBins().size() == rhs.getBins().size() &&
+           memcmp( getBins().data(), rhs.getBins().data(),
+                   getBins().size() * sizeof( uint64_t ) ) == 0;
+}
+
+bool Histogram::operator!=( const Histogram& rhs ) const
+{
+    return !(*this == rhs);
+}
+
 size_t Histogram::getMinIndex() const
 {
     const uint64_t* bins = getBins().data();

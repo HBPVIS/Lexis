@@ -29,6 +29,12 @@ public:
      */
     LEXIS_API Histogram& operator+=( const Histogram& histogram );
 
+    /** @return true if two histograms are identical. */
+    LEXIS_API bool operator==( const Histogram& rhs ) const;
+
+    /** @return true if two histograms are not identical. */
+    LEXIS_API bool operator!=( const Histogram& rhs ) const;
+
     /**
      * @return the index with the minimum value (if there are multiple indices
      *         for min value, the smallest index is returned).
