@@ -67,6 +67,16 @@ public:
 
     /** Sets the number of bins to newSize and clears the histogram. */
     LEXIS_API void resize( size_t newSize );
+
+    /**
+     * Linear sampling of the histogram.
+     *
+     * @param logScale use log for the y-values
+     * @param range the range in [0..1] to use bins from
+     * @return list of points from [0..1] in both axis.
+     */
+    LEXIS_API std::vector< vmml::Vector2f >
+    sampleCurve( bool logScale, const vmml::Vector2f& range ) const;
 };
 
 }
