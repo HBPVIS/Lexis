@@ -117,5 +117,33 @@ void Histogram::resize( size_t newSize )
     getBins().resize( newSize );
 }
 
+std::vector< vmml::Vector2f >
+Histogram::sampleCurve( const bool logScale, const vmml::Vector2f& range ) const
+{
+    if( isEmpty( ))
+        return {};
+
+    const auto* bins = getBins().data();
+    const auto maxIndex = std::distance( bins,
+                   std::max_element( bins, bins + getBins().size() ));
+    const auto heightMax = bins[maxIndex];
+    const float scale = 1.f/ (logScale ? std::log(heightMax) : heightMax);
+
+    const size_t nbBins = std::ceil(getBins().size() * (range[1] - range[0]));
+    const size_t offset( std::floor(getBins().size() * range[0] ));
+
+    std::vector< vmml::Vector2f > points;
+    points.reserve( nbBins );
+    for( size_t i = 0; i < nbBins; ++i )
+    {
+        float value = bins[offset + i];
+        if( logScale && value <= 1.0f )
+            value = 1.0f;
+        points.push_back( { float(i)/nbBins,
+                            1.f - scale * (logScale ? std::log(value) : value) });
+    }
+    return points;
+}
+
 }
 }
