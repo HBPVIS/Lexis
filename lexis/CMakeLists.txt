@@ -26,7 +26,6 @@ set(LEXIS_RENDER_FBS
   ${CMAKE_CURRENT_SOURCE_DIR}/render/frame.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/imageJPEG.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/lookOut.fbs
-  ${CMAKE_CURRENT_SOURCE_DIR}/render/lookupTable1D.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/stream.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/viewport.fbs
 )
