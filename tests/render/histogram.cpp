@@ -65,3 +65,20 @@ BOOST_AUTO_TEST_CASE( sampleCurve )
     BOOST_CHECK_EQUAL_COLLECTIONS( sampleRange.begin(), sampleRange.end(),
                                    expectedRange.begin(), expectedRange.end( ));
 }
+
+BOOST_AUTO_TEST_CASE( mergeDifferentRange )
+{
+    lexis::render::Histogram histogram1;
+    histogram1.setBins( { 10, 5, 0, 5 } );
+    histogram1.setMin(1);
+    histogram1.setMax(5);
+
+    lexis::render::Histogram histogram2;
+    histogram2.setBins( { 1, 2, 3, 4 } );
+    histogram2.setMin(0);
+    histogram2.setMax(4);
+
+    histogram1 += histogram2;
+    BOOST_CHECK_EQUAL( histogram1.getMin(), 0 );
+    BOOST_CHECK_EQUAL( histogram1.getMax(), 5 );
+}

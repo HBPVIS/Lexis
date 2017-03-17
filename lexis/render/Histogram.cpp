@@ -28,18 +28,17 @@ Histogram& Histogram::operator+=( const Histogram& histogram )
         return *this;
     }
 
-    if( histogram.getBins().size() != getBins().size() ||
-        histogram.getMin() != getMin() ||
-        histogram.getMax() != getMax( ))
-    {
+    if( histogram.getBins().size() != getBins().size( ))
         throw std::runtime_error( "Addition of incompatible histograms" );
-    }
 
     const uint64_t* srcBins = histogram.getBins().data();
 
     uint64_t* bins = getBins().data();
     for( size_t i = 0; i < getBins().size(); ++i )
         bins[ i ] += srcBins[ i ];
+
+    setMin( std::min( getMin(), histogram.getMin()));
+    setMax( std::max( getMax(), histogram.getMax()));
 
     return *this;
 }
