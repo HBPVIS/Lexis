@@ -40,6 +40,10 @@ void ClipPlanes::reset()
 
 bool ClipPlanes::isOutside( const vmml::AABBf& worldBox ) const
 {
+    static ClipPlanes noPlanes;
+    if( isEmpty() || getPlanes() == noPlanes.getPlanes())
+        return false;
+
     for( const auto& plane : getPlanes() )
     {
         const float* normal = plane.getNormal();
