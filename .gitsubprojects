@@ -1,4 +1,4 @@
 # -*- mode: cmake -*-
-git_subproject(vmmlib https://github.com/Eyescale/vmmlib.git cfa6243)
-git_subproject(ZeroBuf https://github.com/HBPVIS/ZeroBuf.git cea0338)
-git_subproject(ZeroEQ https://github.com/HBPVIS/ZeroEQ.git 847025a)
+git_subproject(vmmlib https://github.com/Eyescale/vmmlib.git 2635f7f)
+git_subproject(ZeroBuf https://github.com/HBPVIS/ZeroBuf.git 748d6aa)
+git_subproject(ZeroEQ https://github.com/HBPVIS/ZeroEQ.git 9ecd76b)

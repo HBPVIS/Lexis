@@ -1,6 +1,13 @@
 # Changelog {#Changelog}
 
-# git master
+# Release 1.2 (24-05-2017)
+
+* [#27](https://github.com/HBPVis/Lexis/pull/27):
+  Remove lookupTable1D event, superseeded by materialLUT
+* [#23](https://github.com/HBPVis/Lexis/pull/23):
+  Move high-level classes for ClipPlanes and Histogram from Livre
+* [#20](https://github.com/HBPVis/Lexis/pull/20):
+  Colormap/materialLUT event specifications
 
 # Release 1.1 (09-12-2016)
 

@@ -7,7 +7,9 @@ set(Lexis_VERSION_ABI 3)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
                               ${CMAKE_SOURCE_DIR}/CMake/common)
-include(GitExternal)
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/CMake/common/Common.cmake)
+  message(FATAL_ERROR "CMake/common missing, run: git submodule update --init")
+endif()
 
 set(LEXIS_DESCRIPTION
   "Vocabulary of events and shared objects for BBP and HBP software")
@@ -32,7 +34,9 @@ add_subdirectory(lexis)
 add_subdirectory(apps)
 add_subdirectory(tests)
 
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README.md")
+include(CommonCPack)
+
 set(DOXYGEN_MAINPAGE_MD README.md)
-set(DOXYGEN_EXTRA_INPUT ${PROJECT_SOURCE_DIR}/README.md)
-include(CPackConfig)
+set(DOXYGEN_EXTRA_INPUT "${PROJECT_SOURCE_DIR}/README.md")
 include(DoxygenRule)
