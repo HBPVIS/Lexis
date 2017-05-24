@@ -21,8 +21,8 @@ build environments are tested:
 
 Building from source is as simple as:
 
-    git clone https://github.com/HBPVIS/Lexis.git
+    git clone --recursive https://github.com/HBPVIS/Lexis.git
     mkdir Lexis/build
     cd Lexis/build
-    cmake -GNinja ..
+    cmake -GNinja -DCLONE_SUBPROJECTS=ON ..
     ninja

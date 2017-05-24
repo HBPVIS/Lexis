@@ -2,9 +2,7 @@ Debug
 Release
 Makefile
 CMakeLists.txt.user*
-CMake/common/
-FlatBuffers
-httpxx
 Servus
+vmmlib
 ZeroBuf
 ZeroEQ
