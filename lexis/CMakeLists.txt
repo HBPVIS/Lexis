@@ -4,10 +4,6 @@
 include(zerobufGenerateCxx)
 set(__outdir ${PROJECT_BINARY_DIR}/include/lexis)
 
-set(LEXIS_DIR ${__outdir})
-set(LEXIS_FBS ${CMAKE_CURRENT_SOURCE_DIR}/request.fbs)
-zerobuf_generate_cxx(LEXIS ${LEXIS_DIR} ${LEXIS_FBS})
-
 set(LEXIS_DATA_DIR ${__outdir}/data)
 set(LEXIS_DATA_FBS
   ${CMAKE_CURRENT_SOURCE_DIR}/data/cellSetBinaryOp.fbs
@@ -22,7 +18,6 @@ zerobuf_generate_cxx(LEXIS_DATA_DETAIL ${LEXIS_DATA_DIR}/detail
 set(LEXIS_RENDER_DIR ${__outdir}/render)
 set(LEXIS_RENDER_FBS
   ${CMAKE_CURRENT_SOURCE_DIR}/render/materialLUT.fbs
-  ${CMAKE_CURRENT_SOURCE_DIR}/render/exit.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/frame.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/imageJPEG.fbs
   ${CMAKE_CURRENT_SOURCE_DIR}/render/lookOut.fbs
@@ -38,7 +33,6 @@ zerobuf_generate_cxx(LEXIS_RENDER_DETAIL ${LEXIS_RENDER_DIR}/detail
   ${LEXIS_RENDER_DETAIL_FBS})
 
 set(LEXIS_PUBLIC_HEADERS
-  ${LEXIS_HEADERS}
   ${LEXIS_DATA_HEADERS}
   ${LEXIS_DATA_DETAIL_HEADERS}
   ${LEXIS_RENDER_HEADERS}
