@@ -18,7 +18,7 @@ before_install:
   - brew outdated cmake || brew upgrade cmake
   - brew install cppcheck doxygen ninja
   - brew install qt5 zeromq
-  - pip install pyparsing
+  - pip2 install pyparsing
 script:
   - mkdir $BUILD_TYPE
   - cd $BUILD_TYPE

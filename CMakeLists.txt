@@ -2,8 +2,8 @@
 # All rights reserved. Do not distribute without further notice.
 
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
-project(Lexis VERSION 1.2.0)
-set(Lexis_VERSION_ABI 3)
+project(Lexis VERSION 1.3.0)
+set(Lexis_VERSION_ABI 4)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake
                               ${CMAKE_SOURCE_DIR}/CMake/common)

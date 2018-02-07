@@ -1,5 +1,11 @@
 # Changelog {#Changelog}
 
+# Release 1.3 (07-02-2018)
+
+* [#31](https://github.com/HBPVis/Lexis/pull/31):
+  Remove obsolete events exit (unused) and request
+  (use request-reply from ZeroEQ)
+
 # Release 1.2 (24-05-2017)
 
 * [#27](https://github.com/HBPVis/Lexis/pull/27):
